@@ -80,11 +80,17 @@ class CWOPReport(NamedTuple):
 
     def to_cwop_packet(self):
         use_aprs_messaging = True
-        packet = (
-            f"{self.designator:s}>APRS,TCPIP*:{'@' if use_aprs_messaging else '!'}"
-            + f"{self.timestamp:%d%H%M}z{self.latitude}/{self.longitude}"
-            + f"{self.wind_dir}{self.wind}{self.wind_gust}{self.temperature}"
-        )
+
+        packet = f"{self.designator:s}>APRS,TCPIP*:"
+
+        if self.timestamp:
+            packet += f"{'@' if use_aprs_messaging else '/':s}"
+            packet += f"{self.timestamp:%d%H%M}z"
+        else:
+            packet += f"{'=' if use_aprs_messaging else '!':s}"
+
+        packet += f"{self.latitude}/{self.longitude}"
+        packet += f"{self.wind_dir}{self.wind}{self.wind_gust}{self.temperature}"
 
         if self.illuminance and not self.rain_1h:
             packet += str(self.illuminance)
