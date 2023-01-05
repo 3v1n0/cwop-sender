@@ -77,6 +77,7 @@ class CWOPReport(NamedTuple):
     rain_24h: CWOPValue
     rain_day: CWOPValue
     illuminance: CWOPValue
+    snow_24h: CWOPValue
     comment: str
 
     def to_cwop_packet(self):
@@ -98,7 +99,7 @@ class CWOPReport(NamedTuple):
         else:
             packet += str(self.rain_1h)
 
-        packet += f"{self.rain_24h}{self.rain_day}{self.humidity}{self.pressure}"
+        packet += f"{self.rain_24h}{self.rain_day}{self.humidity}{self.pressure}{self.snow_24h}"
 
         if self.comment:
             packet += f" {self.comment}"
@@ -145,6 +146,7 @@ class CWOP:
         rain_1h: Optional[float] = None,
         rain_24h: Optional[float] = None,
         rain_day: Optional[float] = None,
+        snow_24h: Optional[float] = None,
         illuminance: Optional[int] = None,
         comment: Optional[str] = None,
     ) -> CWOPReport:
@@ -223,6 +225,12 @@ class CWOP:
                 rain_day,
                 lambda r: 100 * conversions.mm_to_inch(r),
                 prefix="P",
+                max_digits=3,
+            ),
+            snow_24h=CWOPValue(
+                snow_24h,
+                lambda r: conversions.mm_to_inch(r),
+                prefix="s",
                 max_digits=3,
             ),
             illuminance=illuminance_value,

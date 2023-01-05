@@ -104,6 +104,11 @@ if __name__ == "__main__":
         help="Rain fallen in the current day in mm",
     )
     parser.add_argument(
+        "--snow-24h",
+        type=float_range(min=0),
+        help="Snow fallen in the last 24 hours in mm",
+    )
+    parser.add_argument(
         "--illuminance", type=float_range(min=0), help="Illuminance in lux"
     )
     parser.add_argument(
@@ -140,6 +145,7 @@ if __name__ == "__main__":
         rain_1h=args.rain_1h,
         rain_24h=args.rain_24h,
         rain_day=args.rain_day,
+        snow_24h=args.snow_24h,
         illuminance=args.illuminance,
         comment=args.comment,
     )
