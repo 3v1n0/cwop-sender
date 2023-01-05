@@ -77,6 +77,7 @@ class CWOPReport(NamedTuple):
     rain_24h: CWOPValue
     rain_day: CWOPValue
     illuminance: CWOPValue
+    comment: str
 
     def to_cwop_packet(self):
         use_aprs_messaging = True
@@ -98,10 +99,14 @@ class CWOPReport(NamedTuple):
             packet += str(self.rain_1h)
 
         packet += f"{self.rain_24h}{self.rain_day}{self.humidity}{self.pressure}"
-        packet += ".cwop-sender-py"
+
+        if self.comment:
+            packet += f" {self.comment}"
 
         if self.altitude:
             packet += f" /A={self.altitude}"
+
+        packet += " - cwop-sender-py"
 
         return packet
 
@@ -141,6 +146,7 @@ class CWOP:
         rain_24h: Optional[float] = None,
         rain_day: Optional[float] = None,
         illuminance: Optional[int] = None,
+        comment: Optional[str] = None,
     ) -> CWOPReport:
         illuminance_value = CWOPValue(
             illuminance,
@@ -159,6 +165,12 @@ class CWOP:
 
         timestamp = timestamp.astimezone(
             datetime.timezone.utc) if timestamp else datetime.datetime.utcnow()
+
+        if comment:
+            if "~" in comment:
+                comment = comment.replace('~', '-')
+            if "|" in comment:
+                comment = comment.replace('|', '/')
 
         return CWOPReport(
             designator=self._designator,
@@ -214,6 +226,7 @@ class CWOP:
                 max_digits=3,
             ),
             illuminance=illuminance_value,
+            comment=comment,
         )
 
     def _open_socket(self):

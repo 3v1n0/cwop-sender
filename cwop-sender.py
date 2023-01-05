@@ -106,6 +106,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--illuminance", type=float_range(min=0), help="Illuminance in lux"
     )
+    parser.add_argument(
+        "--comment", type=str, help="Comment to include in the report"
+    )
 
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
@@ -138,6 +141,7 @@ if __name__ == "__main__":
         rain_24h=args.rain_24h,
         rain_day=args.rain_day,
         illuminance=args.illuminance,
+        comment=args.comment,
     )
 
     logger.debug(f"Report prepared as {report}")
