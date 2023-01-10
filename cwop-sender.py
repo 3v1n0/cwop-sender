@@ -76,8 +76,11 @@ if __name__ == "__main__":
         "--passcode", type=int, help="optional passcode for radio operators"
     )
 
-    parser.add_argument("--timestamp", type=datetime.datetime.fromisoformat,
-                        help="timestamp as ISO format")
+    parser.add_argument(
+        "--timestamp",
+        type=datetime.datetime.fromisoformat,
+        help="timestamp as ISO format",
+    )
     parser.add_argument("--temperature", type=float, help="Temperature in °C")
     parser.add_argument(
         "--humidity", type=float_range(min=0, max=100), help="Humidity in %%"
@@ -111,9 +114,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--illuminance", type=float_range(min=0), help="Illuminance in W/m²"
     )
-    parser.add_argument(
-        "--comment", type=str, help="Comment to include in the report"
-    )
+    parser.add_argument("--comment", type=str, help="Comment to include in the report")
 
     parser.add_argument("--verbose", action="store_true")
     parser.add_argument("--dry-run", action="store_true")

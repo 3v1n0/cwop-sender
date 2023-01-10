@@ -167,14 +167,17 @@ class CWOP:
         illuminance: Optional[int] = None,
         comment: Optional[str] = None,
     ) -> CWOPReport:
-        timestamp = timestamp.astimezone(
-            datetime.timezone.utc) if timestamp else datetime.datetime.utcnow()
+        timestamp = (
+            timestamp.astimezone(datetime.timezone.utc)
+            if timestamp
+            else datetime.datetime.utcnow()
+        )
 
         if comment:
             if "~" in comment:
-                comment = comment.replace('~', '-')
+                comment = comment.replace("~", "-")
             if "|" in comment:
-                comment = comment.replace('|', '/')
+                comment = comment.replace("|", "/")
 
         return CWOPReport(
             designator=self._designator,
@@ -240,7 +243,9 @@ class CWOP:
                 illuminance if illuminance < 1000 else illuminance - 1000,
                 prefix="L" if illuminance < 1000 else "l",
                 max_digits=3,
-            ) if illuminance else None,
+            )
+            if illuminance
+            else None,
             comment=comment,
         )
 
