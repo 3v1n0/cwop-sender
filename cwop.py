@@ -32,10 +32,14 @@ class CWOPValue(object):
         self._int_value = conversions.number_to_max_length_int(
             self._converted, self._max_digits, negative=negative
         )
-        if use_float and (
-            self._int_value
-            and abs(self._int_value) < pow(10, max_digits)
-            or self._converted < 1
+        if (
+            use_float
+            and self._converted
+            and (
+                self._int_value
+                and abs(self._int_value) < pow(10, max_digits)
+                or self._converted < 1
+            )
         ):
             cut = str(self._converted)[:max_digits]
             self._int_value = float(cut) if "." in cut else int(cut)
