@@ -101,13 +101,13 @@ class CWOPReport(NamedTuple):
 
         packet += f"{self.rain_24h}{self.rain_day}{self.humidity}{self.pressure}{self.snow_24h}"
 
-        if self.comment:
-            packet += f" {self.comment}"
-
         if self.altitude:
             packet += f" /A={self.altitude}"
 
-        packet += " - cwop-sender-py"
+        if self.comment:
+            packet += f" {self.comment}"
+
+        packet += " - cwop-sender.py"
 
         return packet
 
