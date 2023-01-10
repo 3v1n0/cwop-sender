@@ -104,13 +104,17 @@ class CWOPReport(NamedTuple):
         if self.snow_24h:
             packet += str(self.snow_24h)
 
+        comment_data = []
+
         if self.altitude:
-            packet += f" /A={self.altitude}"
+            comment_data.append(f"/A={self.altitude}")
 
         if self.comment:
-            packet += f" {self.comment}"
+            comment_data.append(self.comment)
 
-        packet += " - cwop-sender.py"
+        comment_data.append("- cwop-sender.py")
+
+        packet += " ".join(comment_data)
 
         return packet
 
