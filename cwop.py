@@ -26,7 +26,7 @@ class CWOPValue(object):
         super().__init__()
         self.value = value
         self._max_digits = max_digits
-        self._converted = converter(value) if converter and value else value
+        self._converted = converter(value) if converter and value is not None else value
         self._int_value = conversions.number_to_max_length_int(
             self._converted, self._max_digits, negative=negative
         )
@@ -36,7 +36,7 @@ class CWOPValue(object):
         return self._int_value is not None
 
     def __repr__(self) -> str:
-        if not self.value:
+        if self.value is None:
             return str(None)
 
         extra_infos = {}
