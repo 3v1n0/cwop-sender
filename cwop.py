@@ -3,6 +3,7 @@
 
 # Simple python implementation of CWOP protocol, based on
 #  ftp://ftp.tapr.org/aprssig/aprsspec/spec/aprs101/APRS101.pdf
+#  http://www.aprs.org/aprs11/spec-wx.txt
 
 from typing import Callable, NamedTuple, Optional, Union
 
@@ -21,6 +22,7 @@ class CWOPValue(object):
         converter: Callable = None,
         max_digits: int = -1,
         negative: bool = False,
+        use_float: bool = False,
         prefix: str = "",
     ):
         super().__init__()
@@ -30,6 +32,14 @@ class CWOPValue(object):
         self._int_value = conversions.number_to_max_length_int(
             self._converted, self._max_digits, negative=negative
         )
+        if use_float and (
+            self._int_value
+            and abs(self._int_value) < pow(10, max_digits)
+            or self._converted < 1
+        ):
+            cut = str(self._converted)[:max_digits]
+            self._int_value = float(cut) if "." in cut else int(cut)
+
         self.prefix = prefix if prefix and len(prefix) == 1 else ""
 
     def __bool__(self):
@@ -224,6 +234,7 @@ class CWOP:
                 lambda r: conversions.mm_to_inch(r),
                 prefix="s",
                 max_digits=3,
+                use_float=True,
             ),
             illuminance=CWOPValue(
                 illuminance if illuminance < 1000 else illuminance - 1000,
