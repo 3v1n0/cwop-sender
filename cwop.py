@@ -157,21 +157,6 @@ class CWOP:
         illuminance: Optional[int] = None,
         comment: Optional[str] = None,
     ) -> CWOPReport:
-        illuminance_value = CWOPValue(
-            illuminance,
-            conversions.lux_to_wm2,
-            prefix="L",
-            max_digits=3,
-        )
-
-        if illuminance is not None and not illuminance_value:
-            illuminance_value = CWOPValue(
-                illuminance,
-                lambda i: conversions.lux_to_wm2(i) - 1000,
-                prefix="l",
-                max_digits=3,
-            )
-
         timestamp = timestamp.astimezone(
             datetime.timezone.utc) if timestamp else datetime.datetime.utcnow()
 
@@ -240,7 +225,11 @@ class CWOP:
                 prefix="s",
                 max_digits=3,
             ),
-            illuminance=illuminance_value,
+            illuminance=CWOPValue(
+                illuminance if illuminance < 1000 else illuminance - 1000,
+                prefix="L" if illuminance < 1000 else "l",
+                max_digits=3,
+            ) if illuminance else None,
             comment=comment,
         )
 

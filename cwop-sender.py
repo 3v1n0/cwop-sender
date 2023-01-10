@@ -109,7 +109,7 @@ if __name__ == "__main__":
         help="Snow fallen in the last 24 hours in mm",
     )
     parser.add_argument(
-        "--illuminance", type=float_range(min=0), help="Illuminance in lux"
+        "--illuminance", type=float_range(min=0), help="Illuminance in W/m²"
     )
     parser.add_argument(
         "--comment", type=str, help="Comment to include in the report"
