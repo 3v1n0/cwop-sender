@@ -104,12 +104,13 @@ class CWOPReport(NamedTuple):
         packet += f"{self.latitude}/{self.longitude}"
         packet += f"{self.wind_dir}{self.wind}{self.wind_gust}{self.temperature}"
 
-        if self.illuminance and not self.rain_1h:
-            packet += str(self.illuminance)
-        else:
+        if self.rain_1h:
             packet += str(self.rain_1h)
 
         packet += f"{self.rain_24h}{self.rain_day}{self.humidity}{self.pressure}"
+
+        if self.illuminance:
+            packet += str(self.illuminance)
 
         if self.snow_24h:
             packet += str(self.snow_24h)
