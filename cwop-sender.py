@@ -85,7 +85,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--humidity", type=float_range(min=0, max=100), help="Humidity in %%"
     )
-    parser.add_argument("--pressure", type=float_range(min=0), help="Pressure in Pa")
+    parser.add_argument("--pressure", type=float_range(min=0), help="Pressure in hPa / mbar")
     parser.add_argument("--wind", type=float_range(min=0), help="Wind speed in m/s")
     parser.add_argument(
         "--wind-dir", type=int_range(min=0, max=360), help="Wind direction in degrees"

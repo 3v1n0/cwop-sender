@@ -202,7 +202,7 @@ class CWOP:
             ),
             pressure=CWOPValue(
                 pressure,
-                lambda p: conversions.number_to_max_length_int(p / 100.0),
+                lambda p: conversions.number_to_max_length_int(p / 10.0),
                 prefix="b",
                 max_digits=5,
             ),
